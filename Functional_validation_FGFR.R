@@ -6,10 +6,12 @@ library(car)
 library(dunn.test)
 library(dplyr)
 
+# Set directory
+setwd('C:/Users/theod/Downloads')
+
 ## qPCR
 # Load data
-data<-read_xlsx('qPCR.xlsx', sheet=1)
-data<-data[!data$Sample %in% 'D5',]
+data<-read_xlsx('qPCR.xlsx')
 data$logFC<-log2(data$FC/data$Control)
 data$logFCF<-log2(data$`FC+F`/data$Control)
 data<-data[,c(1,2,6,7)]
@@ -75,8 +77,7 @@ results<-results[results$p.value <= 0.05,]
 
 ## LEGENDplex
 # Load data
-data<-read_xlsx('LegendPlex.xlsx',  sheet=2)
-data<-data[!data$Sample %in% 'D5',]
+data<-read_xlsx('LEGENDplex.xlsx')
 
 # Process data
 data$logFC<-log2(data$FC/data$Control)
@@ -116,7 +117,7 @@ for(i in unique(data$Analyte)){
         stop("Stop. No complete pairs found")
       }
       
-      differences<-wide[[4]] - wide[[7]]
+      differences<-wide[[3]] - wide[[5]]
       
       if(length(differences) >= 3) {
         norm_p<-shapiro.test(differences)$p.value
@@ -126,13 +127,13 @@ for(i in unique(data$Analyte)){
       }
       
       if (normal) {
-        stat_p<-t.test(wide[[4]], wide[[7]], paired=TRUE, alternative='two.sided')
-        tmp<-data.frame(parameter=i, test=stat_p$method, comparison=paste(colnames(wide)[2], 'vs', colnames(wide)[5], sep=' '), p.value=stat_p$p.value)
+        stat_p<-t.test(wide[[3]], wide[[5]], paired=TRUE, alternative='two.sided')
+        tmp<-data.frame(parameter=i, test=stat_p$method, comparison=paste(colnames(wide)[2], 'vs', colnames(wide)[4], sep=' '), p.value=stat_p$p.value)
         results<-rbind(tmp, results)
         
       } else {
-        stat_p<-wilcox.test(wide[[4]], wide[[7]], paired=TRUE, alternative='two.sided')
-        tmp<-data.frame(parameter=i, test=stat_p$method, comparison=paste(colnames(wide)[2], 'vs', colnames(wide)[5], sep=' '), p.value=stat_p$p.value)
+        stat_p<-wilcox.test(wide[[3]], wide[[5]], paired=TRUE, alternative='two.sided')
+        tmp<-data.frame(parameter=i, test=stat_p$method, comparison=paste(colnames(wide)[2], 'vs', colnames(wide)[4], sep=' '), p.value=stat_p$p.value)
         results<-rbind(tmp, results)
       }
     }
