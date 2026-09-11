@@ -11,6 +11,7 @@ data<-read_xlsx('LN_flow_data.xlsx')
 
 # Process data
 data<-data[,c(1,2,7:13,18,19)]
+data<-data[,c(1,2,24:30,35,36)]
 
 table(data$Disease)
 
@@ -22,7 +23,7 @@ results<-data.frame()
 groups<-unique(data$Disease)
 k<-length(groups)
 paired<-FALSE
-  
+
 if(k < 2){
   print("Stop. Column of interest has fewer than 2 levels")
 }
@@ -55,14 +56,14 @@ for(i in unique(data$variable)){
   resi<-resi$p.value
   
   if(var | resi <= 0.05){
-      stat_p<-dunn.test(x=data2$value, g=data2$Disease)
-      tmp<-data.frame(parameter=i, test='Kruskal-Wallis non parametric', comparison=stat_p$comparisons, p.value=stat_p$P.adjusted)
-      results<-rbind(tmp, results)}
-    else {
-      stat_p<-TukeyHSD(res.aov)
-      tmp<-data.frame(parameter=i, test='one-way ANOVA', comparison=rownames(stat_p$Disease), p.value=stat_p$Disease[,4])
-      results<-rbind(tmp, results)
-    }
+    stat_p<-dunn.test(x=data2$value, g=data2$Disease)
+    tmp<-data.frame(parameter=i, test='Kruskal-Wallis non parametric', comparison=stat_p$comparisons, p.value=stat_p$P.adjusted)
+    results<-rbind(tmp, results)}
+  else {
+    stat_p<-TukeyHSD(res.aov)
+    tmp<-data.frame(parameter=i, test='one-way ANOVA', comparison=rownames(stat_p$Disease), p.value=stat_p$Disease[,4])
+    results<-rbind(tmp, results)
+  }
 }
 
 results<-results[results$p.value <= 0.05,]
