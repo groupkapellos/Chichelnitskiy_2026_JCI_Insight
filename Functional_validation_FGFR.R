@@ -6,9 +6,6 @@ library(car)
 library(dunn.test)
 library(dplyr)
 
-# Set didplyr# Set directory
-setwd('C:/Users/theod/Downloads')
-
 ## qPCR
 # Load data
 data<-read_xlsx('qPCR.xlsx', sheet=1)
