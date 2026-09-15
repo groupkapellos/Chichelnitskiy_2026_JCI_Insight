@@ -84,7 +84,7 @@ for(i in levels(mast$integrated_snn_res.0.2)){
   
   if(dim(res.fib)[1]>0){
     res.fib$gene<-rownames(res.fib)
-    res.fib$direction<-'HIgher in fibrosis'
+    res.fib$direction<-'Higher in fibrosis'
     res.fib$cluster<-paste0('mast', i)
   }
   
