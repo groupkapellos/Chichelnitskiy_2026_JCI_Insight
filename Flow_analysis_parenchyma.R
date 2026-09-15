@@ -22,23 +22,6 @@ data$Disease<-factor(data$Disease, levels=c("Tumor free",  "Emphysema", "Fibrosi
 
 data<-melt(data, id.vars=c('Disease','LuT'))
 
-# Plot graph
-ggplot(data, aes(x=variable, y=value, fill=Disease))+
-  stat_summary(fun.data=mean_se, geom="errorbar", position='dodge', width=0.9)+
-  geom_boxplot()+
-  ylab('% immune cells')+
-  xlab('')+
-  theme(axis.title.x=element_text(size=14,face='bold'),
-        axis.title.y=element_text(size=14,face='bold'),
-        axis.text.x=element_text(size=14,face='bold'),
-        axis.text.y=element_text(size=14,colour='black'),
-        strip.text=element_text(size=12),
-        strip.background = element_rect(fill='gray74',colour='black'),
-        legend.title=element_text(size=13,face='bold',hjust=1),
-        legend.key=element_rect(colour='black'),
-        panel.background=element_rect(fill='white'),
-        panel.border=element_rect(colour='gray40',fill=NA))
-
 # Perform statistical analysis
 for (i in levels(data$variable)){
   df<-data[data$variable==i,]
@@ -72,23 +55,6 @@ data<-data[data$Disease %in% c("Tumor free",  "Emphysema", "Fibrosis"),]
 data$Disease<-factor(data$Disease, levels=c("Tumor free",  "Emphysema", "Fibrosis"))
 
 data<-melt(data, id.vars=c('Disease','LuT'))
-
-# Plot graph
-ggplot(data, aes(x=variable, y=value, fill=Disease))+
-  stat_summary(fun.data=mean_se, geom="errorbar", position='dodge', width=0.9)+
-  geom_boxplot()+
-  ylab('% immune cells')+
-  xlab('')+
-  theme(axis.title.x=element_text(size=14,face='bold'),
-        axis.title.y=element_text(size=14,face='bold'),
-        axis.text.x=element_text(size=14,face='bold'),
-        axis.text.y=element_text(size=14,colour='black'),
-        strip.text=element_text(size=12),
-        strip.background = element_rect(fill='gray74',colour='black'),
-        legend.title=element_text(size=13,face='bold',hjust=1),
-        legend.key=element_rect(colour='black'),
-        panel.background=element_rect(fill='white'),
-        panel.border=element_rect(colour='gray40',fill=NA))
 
 # Perform statistical analysis
 for (i in levels(data$variable)){
